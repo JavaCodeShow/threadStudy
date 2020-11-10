@@ -35,7 +35,8 @@ public class CompletableFutureTest {
 
 
         // 下面的方法可以帮助我们获得所有子任务的处理结果
-        CompletableFuture<List<String>> finalResults = allFutures.thenApply(v -> accountFindingFutureList.stream().map(accountFindingFuture -> accountFindingFuture.join())
+        CompletableFuture<List<String>> finalResults = allFutures.thenApply(v -> accountFindingFutureList.stream()
+                .map(accountFindingFuture -> accountFindingFuture.join())
                 .collect(Collectors.toList()));
 
         try {
@@ -48,11 +49,24 @@ public class CompletableFutureTest {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         List<String> l = new ArrayList<String>();
         l.add("11111");
         l.add("22222");
         l.add("33333");
-        batchProcess(l);
+        // batchProcess(l);
+        List<CompletableFuture<String>> futureList = new ArrayList<>();
+        l.forEach(x -> {
+            futureList.add(CompletableFuture.supplyAsync(() -> {
+                // 这个就是实际的每一个任务的结果
+                return x + " : hello";
+            }));
+        });
+        // CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()]));
+        // CompletableFuture<List<Object>> listCompletableFuture = voidCompletableFuture.thenApply(v -> futureList.stream().map(completableFuture -> completableFuture.join()).collect(Collectors.toList()));
+        // List<Object> objects = listCompletableFuture.get();
+        List<String> strings = new CompletableFutureUtils<String>().batchAsyncRunThenMergeResult(futureList);
+        System.out.println(strings);
     }
 }
+
