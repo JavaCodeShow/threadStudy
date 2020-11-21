@@ -1,28 +1,23 @@
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author 江峰
  * @create 2019-11-27   16:43
  */
+
+
 public class Main {
-    public static void main(String[] args) {
-        final Lock l1 = new ReentrantLock();
-        final Lock l2 = new ReentrantLock();
-        Thread threadA = new Thread(() -> {
-            l1.lock();
-            try {
-                System.out.println("now i in threadA-locka");
-                Thread.sleep(1000L);
-                l2.lock();
-                System.out.println("now i in threadA-lockb");
-            } catch (Exception e) {
-                // ignore
+    public static void main(String[] args) throws InterruptedException {
+        List<String> names = Arrays.asList("Larry", "Steve", "James");
+        AtomicReference<String> str = new AtomicReference<>();
+        names.forEach(s -> {
+            if ("Steve".equals(s)) {
+                str.set(s);
             }
         });
-    }
-
-    public synchronized void hello() {
-        System.out.println("synchronized 代码块");
+        String s = str.get();
+        System.out.println(s);
     }
 }
