@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author 江峰
  * @create 2019-11-29 16:50
  */
-public class ThreadLocalTest {
+public class ThreadLocalTest1 {
 	private static final AtomicInteger count = new AtomicInteger(0);
 
 	public static void main(String[] args) {
