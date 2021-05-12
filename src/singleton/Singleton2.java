@@ -7,12 +7,16 @@ package singleton;
  * @create 2019-12-03 16:04
  */
 public class Singleton2 {
-	private static final Singleton2 singleton = null;
+	private static Singleton2 singleton = null;
 
-	// public singleton.Singleton2 getSingleton() {
-	// if (singleton == null) {
-	// singleton = new Singleton2();
-	// }
-	// return singleton;
-	// }
+	private Singleton2() {
+
+	}
+
+	public static Singleton2 getSingleton() {
+		if (singleton == null) {
+			singleton = new Singleton2();
+		}
+		return singleton;
+	}
 }

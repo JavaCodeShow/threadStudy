@@ -9,6 +9,10 @@ package singleton;
 public class Singleton3 {
 	private static Singleton3 singleton = null;
 
+	private Singleton3() {
+
+	}
+
 	public Singleton3 getSingleton() {
 		if (singleton == null) {
 			synchronized (Singleton3.class) {
