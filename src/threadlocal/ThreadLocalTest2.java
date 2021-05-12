@@ -10,6 +10,7 @@ public class ThreadLocalTest2 {
 	static void fun() {
 		ThreadLocal threadLocal = ThreadLocalUtils.getThreadLocal();
 		threadLocal.set("name");
+		threadLocal.set("man");
 	}
 
 	static void goo() {
