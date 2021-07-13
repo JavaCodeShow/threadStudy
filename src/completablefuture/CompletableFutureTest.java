@@ -3,13 +3,14 @@ package completablefuture;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class CompletableFutureTest {
+    private static ExecutorService executorService = Executors.newFixedThreadPool(10);
+
     public static CompletableFuture<String> findAccount(String accountId) {
+
         return CompletableFuture.supplyAsync(() -> {
             // mock finding account from database
             try {
@@ -65,7 +66,7 @@ public class CompletableFutureTest {
             futureList.add(CompletableFuture.supplyAsync(() -> {
                 // 这个就是实际的每一个任务的结果
                 return x + " : hello";
-            }));
+            }, executorService));
         });
 
         List<String> stringList = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
