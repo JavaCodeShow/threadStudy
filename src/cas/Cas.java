@@ -13,32 +13,32 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public class Cas {
-	// private static int count = 0;
-	private static final AtomicInteger count = new AtomicInteger(0);
+    // private static int count = 0;
+    private static final AtomicInteger count = new AtomicInteger(0);
 
-	public static void main(String[] args) throws InterruptedException {
-		ExecutorService es = Executors.newCachedThreadPool();
-		for (int i = 0; i < 2; i++) {
-			es.execute(new Runnable() {
-				@Override
-				public void run() {
-					for (int j = 0; j < 100; j++) {
-						Thread.yield();
-						Thread.yield();
-						Thread.yield();
-						Thread.yield();
-						// count++;
-						count.incrementAndGet();
-						Thread.yield();
-						Thread.yield();
-						Thread.yield();
-						Thread.yield();
-					}
-				}
-			});
-		}
-		TimeUnit.SECONDS.sleep(2);
-		System.out.println(count);
-		System.exit(0);
-	}
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorService es = Executors.newCachedThreadPool();
+        for (int i = 0; i < 2; i++) {
+            es.execute(new Runnable() {
+                @Override
+                public void run() {
+                    for (int j = 0; j < 100; j++) {
+                        Thread.yield();
+                        Thread.yield();
+                        Thread.yield();
+                        Thread.yield();
+                        // count++;
+                        count.incrementAndGet();
+                        Thread.yield();
+                        Thread.yield();
+                        Thread.yield();
+                        Thread.yield();
+                    }
+                }
+            });
+        }
+        TimeUnit.SECONDS.sleep(2);
+        System.out.println(count);
+        System.exit(0);
+    }
 }

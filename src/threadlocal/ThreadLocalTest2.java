@@ -7,22 +7,22 @@ package threadlocal;
  * @since
  */
 public class ThreadLocalTest2 {
-	static void fun() {
-		ThreadLocal threadLocal = ThreadLocalUtils.getThreadLocal();
-		threadLocal.set("name");
-		threadLocal.set("man");
-	}
+    static void fun() {
+        ThreadLocal threadLocal = ThreadLocalUtils.getThreadLocal();
+        threadLocal.set("name");
+        threadLocal.set("man");
+    }
 
-	static void goo() {
-		ThreadLocal threadLocal = ThreadLocalUtils.getThreadLocal();
-		String name = (String) threadLocal.get();
-		System.out.println(name);
-	}
+    static void goo() {
+        ThreadLocal threadLocal = ThreadLocalUtils.getThreadLocal();
+        String name = (String) threadLocal.get();
+        System.out.println(name);
+    }
 
-	public static void main(String[] args) {
-		new Thread(() -> {
-			fun();
-			goo();
-		}).start();
-	}
+    public static void main(String[] args) {
+        new Thread(() -> {
+            fun();
+            goo();
+        }).start();
+    }
 }

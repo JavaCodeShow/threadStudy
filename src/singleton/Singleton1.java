@@ -7,12 +7,12 @@ package singleton;
  * @create 2019-12-03 16:01
  */
 public class Singleton1 {
-	private static final Singleton1 singleton = new Singleton1();
+    private static final Singleton1 singleton = new Singleton1();
 
-	private Singleton1() {
-	}
+    private Singleton1() {
+    }
 
-	public static Singleton1 getSingleton() {
-		return singleton;
-	}
+    public static Singleton1 getSingleton() {
+        return singleton;
+    }
 }
