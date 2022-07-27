@@ -18,15 +18,12 @@ public class JoinCountDownLatchTest {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         ExecutorService es = Executors.newFixedThreadPool(2);
         for (int i = 0; i < 2; i++) {
-            es.execute(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < 5; i++) {
-                        System.out.println(
-                                Thread.currentThread().getName() + " : " + i);
-                    }
-                    countDownLatch.countDown();
+            es.execute(() -> {
+                for (int i1 = 0; i1 < 5; i1++) {
+                    System.out.println(
+                            Thread.currentThread().getName() + " : " + i1);
                 }
+                countDownLatch.countDown();
             });
         }
         es.shutdown();

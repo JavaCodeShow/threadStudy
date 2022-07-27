@@ -56,13 +56,13 @@ public class CompletableFutureTest {
 
     public static void main(String[] args)
             throws ExecutionException, InterruptedException {
-        List<String> l = new ArrayList<String>();
-        l.add("11111");
-        l.add("22222");
-        l.add("33333");
+        List<String> list = new ArrayList<>();
+        list.add("11111");
+        list.add("22222");
+        list.add("33333");
         // batchProcess(l);
         List<CompletableFuture<String>> futureList = new ArrayList<>();
-        l.forEach(x -> {
+        list.forEach(x -> {
             futureList.add(CompletableFuture.supplyAsync(() -> {
                 // 这个就是实际的每一个任务的结果
                 return x + " : hello";
