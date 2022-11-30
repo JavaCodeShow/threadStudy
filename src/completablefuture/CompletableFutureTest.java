@@ -62,12 +62,10 @@ public class CompletableFutureTest {
         list.add("33333");
         // batchProcess(l);
         List<CompletableFuture<String>> futureList = new ArrayList<>();
-        list.forEach(x -> {
-            futureList.add(CompletableFuture.supplyAsync(() -> {
-                // 这个就是实际的每一个任务的结果
-                return x + " : hello";
-            }, executorService));
-        });
+        list.forEach(x -> futureList.add(CompletableFuture.supplyAsync(() -> {
+            // 这个就是实际的每一个任务的结果
+            return x + " : hello";
+        }, executorService)));
 
         List<String> stringList = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
         System.out.println(stringList);

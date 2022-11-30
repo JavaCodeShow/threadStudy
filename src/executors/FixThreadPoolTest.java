@@ -14,15 +14,12 @@ public class FixThreadPoolTest {
         ExecutorService es = Executors.newFixedThreadPool(3);
         // 通过这个线程池来执行任务，
         for (int i = 0; i < 4; i++) {
-            es.execute(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println(Thread.currentThread().getName());
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            es.execute(() -> {
+                System.out.println(Thread.currentThread().getName());
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             });
         }

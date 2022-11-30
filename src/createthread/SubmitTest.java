@@ -15,6 +15,7 @@ public class SubmitTest {
         ExecutorService es = Executors.newFixedThreadPool(5);
         Future<Object> future = es.submit(() -> {
             TimeUnit.SECONDS.sleep(2);
+            // int i = 1 / 0;
             return "666";
         });
         Object result = future.get();
