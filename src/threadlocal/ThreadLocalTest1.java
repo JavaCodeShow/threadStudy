@@ -2,6 +2,7 @@ package threadlocal;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,31 +12,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ThreadLocalTest1 {
     private static final AtomicInteger count = new AtomicInteger(0);
 
-    public static void main(String[] args) {
-        final ThreadLocal<String> myThreadLocal = new ThreadLocal<String>();
-        ExecutorService es = Executors.newCachedThreadPool();
+    public static void main(String[] args) throws InterruptedException {
+        final ThreadLocal<String> myThreadLocal = new ThreadLocal<>();
+        ExecutorService es = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 5; i++) {
-            es.execute(new Runnable() {
-                @Override
-                public void run() {
-
-                    try {
-                        myThreadLocal
-                                .set(String.valueOf(count.getAndDecrement()));
-                        System.out.println(Thread.currentThread().getName()
-                                + "======= " + myThreadLocal.get());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        myThreadLocal.remove();
-                    }
+            TimeUnit.MILLISECONDS.sleep(i);
+            es.execute(() -> {
+                try {
+                    myThreadLocal.set(String.valueOf(count.getAndIncrement()));
+                    System.out.println(Thread.currentThread().getName() + "======= " + myThreadLocal.get());
+                } finally {
+                    // 手动remove,避免内存泄露
+                    myThreadLocal.remove();
                 }
             });
         }
         es.shutdown();
         myThreadLocal.set("hello");
-        System.out.println(Thread.currentThread().getName() + "======= "
-                + myThreadLocal.get());
-        // System.exit(0);
+        System.out.println(Thread.currentThread().getName() + "======= " + myThreadLocal.get());
+        // 手动remove,避免内存泄露
+        myThreadLocal.remove();
     }
 }

@@ -14,43 +14,37 @@ public class MakeFood {
         final ReentrantLock lock = new ReentrantLock();
         Condition c1 = lock.newCondition();
         Condition c2 = lock.newCondition();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                lock.lock();
-                try {
-                    while (true) {
-                        c2.await();
-                        System.out.println(Thread.currentThread().getName()
-                                + "-------菜上好了");
-                        TimeUnit.SECONDS.sleep(1);
-                        c1.signalAll();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    lock.unlock();
+        new Thread(() -> {
+            lock.lock();
+            try {
+                while (true) {
+                    c2.await();
+                    System.out.println(Thread.currentThread().getName()
+                            + "-------菜上好了");
+                    TimeUnit.SECONDS.sleep(1);
+                    c1.signalAll();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         }).start();
         TimeUnit.MILLISECONDS.sleep(10);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                lock.lock();
-                try {
-                    while (true) {
-                        System.out.println(
-                                Thread.currentThread().getName() + "菜做好了");
-                        TimeUnit.SECONDS.sleep(1);
-                        c2.signalAll();
-                        c1.await();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    lock.unlock();
+        new Thread(() -> {
+            lock.lock();
+            try {
+                while (true) {
+                    System.out.println(
+                            Thread.currentThread().getName() + "菜做好了");
+                    TimeUnit.SECONDS.sleep(1);
+                    c2.signalAll();
+                    c1.await();
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         }).start();
     }

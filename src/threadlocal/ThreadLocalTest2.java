@@ -2,20 +2,17 @@ package threadlocal;
 
 /**
  * @author 江峰
- * @email feng.jiang@marketin.cn
- * @create 2021-05-12 22:48:46
- * @since
  */
 public class ThreadLocalTest2 {
     static void fun() {
-        ThreadLocal threadLocal = ThreadLocalUtils.getThreadLocal();
+        ThreadLocal<String> threadLocal = ThreadLocalUtils.getThreadLocal();
         threadLocal.set("name");
         threadLocal.set("man");
     }
 
     static void goo() {
-        ThreadLocal threadLocal = ThreadLocalUtils.getThreadLocal();
-        String name = (String) threadLocal.get();
+        ThreadLocal<String> threadLocal = ThreadLocalUtils.getThreadLocal();
+        String name = threadLocal.get();
         System.out.println(name);
     }
 
@@ -23,6 +20,8 @@ public class ThreadLocalTest2 {
         new Thread(() -> {
             fun();
             goo();
+            // 手动remove,避免内存泄露
+            ThreadLocalUtils.getThreadLocal().remove();
         }).start();
     }
 }
