@@ -5,7 +5,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Java捕获线程异常的几种方式：https://blog.csdn.net/pange1991/article/details/82115437?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-82115437-blog-123413430.pc_relevant_multi_platform_featuressortv2removedup&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-82115437-blog-123413430.pc_relevant_multi_platform_featuressortv2removedup&utm_relevant_index=1
+ * Java捕获线程异常的几种方式：
+ * https://blog.csdn.net/pange1991/article/details/82115437
  *
  * @author 江峰
  * @create 2019-12-02 10:40
