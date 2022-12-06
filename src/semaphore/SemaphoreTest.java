@@ -14,7 +14,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class SemaphoreTest {
     public static void main(String[] args) {
+
         ExecutorService es = Executors.newCachedThreadPool();
+
+        // 只能有一个线程访问
         final Semaphore sp = new Semaphore(1);
 
         //循环10遍相当于创建了10个线程
@@ -23,7 +26,7 @@ public class SemaphoreTest {
                 try {
                     sp.acquire();//获得一盏信号灯，该线程就可以运行了
                     System.out.println("线程" + Thread.currentThread().getName() +
-                            "进入，当前已有" + (10 - sp.availablePermits()) + "个并发" + "时间 = " + LocalDateTime.now());//获取了可获得许可数
+                            "进入，当前已有" + (10 - sp.availablePermits()) + "个并发，" + "时间 = " + LocalDateTime.now());//获取了可获得许可数
                     TimeUnit.SECONDS.sleep(1);
                     sp.release();//线程离开，就释放灯
                 } catch (InterruptedException e) {
