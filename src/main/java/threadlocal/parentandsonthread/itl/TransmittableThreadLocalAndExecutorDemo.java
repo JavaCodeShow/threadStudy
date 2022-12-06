@@ -25,6 +25,7 @@ public class TransmittableThreadLocalAndExecutorDemo implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("----子线程获取值：" + inheritableThreadLocal.get());
+        // 会发现其实线程池复用了，第二次并没有创建新的线程。只有创建线程的时候才会从父线程里面获取到线程本地变量的值
+        System.out.println("----threadName=" + Thread.currentThread().getName() + "   子线程获取值：" + inheritableThreadLocal.get());
     }
 }
