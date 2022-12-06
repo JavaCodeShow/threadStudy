@@ -1,24 +1,24 @@
 package threadlocal.parentandsonthread.itl;
 
-public class TransmittableThreadLocalDemo {
-    private static InheritableThreadLocal<Integer> requestIdThreadLocal = new InheritableThreadLocal<>();
+public class TransmittableThreadLocalDemo implements Runnable {
+    private static InheritableThreadLocal<String> threadLocal = new InheritableThreadLocal<>();
 
     public static void main(String[] args) {
-        Integer reqId = new Integer(5);
-        TransmittableThreadLocalDemo a = new TransmittableThreadLocalDemo();
-        a.setRequestId(reqId);
+        System.out.println("----主线程设置值为\"主线程\"");
+        threadLocal.set("主线程");
+        System.out.println("----主线程设置后获取值：" + threadLocal.get());
+        Thread tt = new Thread(new TransmittableThreadLocalDemo());
+        tt.start();
+        System.out.println("----主线程结束");
+
     }
 
-    public void setRequestId(Integer requestId) {
-        requestIdThreadLocal.set(requestId);
-        doBussiness();
+    @Override
+    public void run() {
+        System.out.println("----子线程设置值前获取：" + threadLocal.get());
+        System.out.println("----新开线程设置值为\"子线程\"");
+        threadLocal.set("子线程");
+        System.out.println("----新开的线程设置值后获取：" + threadLocal.get());
     }
 
-    public void doBussiness() {
-        System.out.println("首先打印requestId:" + requestIdThreadLocal.get());
-        new Thread(() -> {
-            System.out.println("子线程启动");
-            System.out.println("在子线程中访问requestId:" + requestIdThreadLocal.get());
-        }).start();
-    }
 }
