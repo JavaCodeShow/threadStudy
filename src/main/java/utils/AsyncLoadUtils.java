@@ -76,8 +76,7 @@ public class AsyncLoadUtils {
         public <R> AsyncFutureResult<R> submitTask(
                 String taskName,
                 Supplier<R> task,
-                Executor executor
-        ) {
+                Executor executor) {
             if (closed) {
                 throw new IllegalStateException("cannot submit new task due to session is closed");
             }

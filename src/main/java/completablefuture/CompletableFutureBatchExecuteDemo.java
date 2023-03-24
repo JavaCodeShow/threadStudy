@@ -1,6 +1,8 @@
 package completablefuture;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -16,14 +18,19 @@ public class CompletableFutureBatchExecuteDemo {
     private static final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        List<String> list = new ArrayList<>();
-        list.add("11111");
-        list.add("22222");
-        list.add("33333");
-        List<CompletableFuture<String>> futureList = new ArrayList<>();
-        list.forEach(x -> futureList.add(CompletableFuture.supplyAsync(() -> x + " : hello", executorService)));
-        List<String> stringList = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        List<String> list = Lists.newArrayList("1", "2", "3", "4", "5", "6", "7");
+        List<List<String>> partitionList = Lists.partition(list, 2);
+        List<String> resultList = partitionList.stream()
+                .map(x -> CompletableFuture.supplyAsync(() -> findByIdList(x), executorService))
+                .map(CompletableFuture::join)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
         executorService.shutdown();
-        System.out.println(stringList);
+        System.out.println(resultList);
+    }
+
+    private static List<String> findByIdList(List<String> idList) {
+        System.out.println(idList);
+        return idList.stream().map(id -> "hello: " + id).collect(Collectors.toList());
     }
 }
