@@ -1,53 +1,31 @@
 package utils;
 
 
-import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class AsyncLoadTest {
 
+
     public static void main(String[] args) throws Throwable {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-
-        System.out.println(LocalDateTime.now() + "       " + "start");
-
-
         AsyncLoadUtils.AsyncLoader loader = AsyncLoadUtils.newLoader();
-        AsyncLoadUtils.AsyncFutureResult<String> helloResult = loader.submitTask("hello", () -> {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(LocalDateTime.now() + "       " + "hello");
-            return "hello";
+        AsyncLoadUtils.AsyncFutureResult<String> strTask = loader.submitTask("strTask", () -> {
+            System.out.println("async task two");
+            return "root";
+        }, executorService);
+        AsyncLoadUtils.AsyncFutureResult<Integer> numTask = loader.submitTask("numTask", () -> {
+            System.out.println("async task one");
+            return 123456;
         }, executorService);
 
-        AsyncLoadUtils.AsyncFutureResult<String> funResult = loader.submitTask("hello", () -> {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(LocalDateTime.now() + "       " + "fun");
-            int i = 1 / 0;
-            return "fun";
-        }, executorService);
-        for (AsyncLoadUtils.AsyncFutureResult result : loader.getResultList()) {
-            if (Objects.nonNull(result.getThrowable())) {
-                System.out.println(result.getThrowable());
-            }
-        }
-
-        String result = helloResult.getResult();
-        String result1 = funResult.getResult();
-        System.out.println(LocalDateTime.now() + "       " + "get result");
-        System.out.println(result);
-        System.out.println(result1);
-
+        loader.join();
+        // Integer num = numTask.getResult();
+        // String str = strTask.getResult();
+        String str = strTask.getResultOrThrow();
+        Integer num = numTask.getResultOrThrow();
+        System.out.println(num);
+        System.out.println(str);
         executorService.shutdown();
     }
 }
