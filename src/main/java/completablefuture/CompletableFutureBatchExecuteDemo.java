@@ -3,7 +3,6 @@ package completablefuture;
 import com.google.common.collect.Lists;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
@@ -19,20 +18,24 @@ public class CompletableFutureBatchExecuteDemo {
         final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         // 单个
-        // List<String> list = new ArrayList<>();
-        // list.add("1");
-        // list.add("2");
-        // list.add("3");
-        // List<CompletableFuture<String>> futureList = new ArrayList<>();
-        // list.forEach(x -> futureList.add(CompletableFuture.supplyAsync(() -> findById(x), executorService)));
-        // List<String> stringList = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        // List<String> list = Lists.newArrayList("1", "2", "3");
+        // List<String> stringList = list.stream().map(x ->
+        //         CompletableFuture.supplyAsync(() -> findById(x), executorService))
+        //         .collect(Collectors.toList()).stream() // 这里一定需要转换为steam流才能是并行的
+        //         .map(CompletableFuture::join)
+        //         .distinct()
+        //         .collect(Collectors.toList());
 
         // 批量
-        List<String> list = Lists.newArrayList("1", "2", "3", "4", "5", "6", "7");
+        List<String> list = Lists.newArrayList("1", "2", "3", "4", "5");
         List<List<String>> partitionList = Lists.partition(list, 2);
-        List<CompletableFuture<List<String>>> futureList = new ArrayList<>();
-        partitionList.forEach(x -> futureList.add(CompletableFuture.supplyAsync(() -> findByIdList(x), executorService)));
-        List<String> stringList = futureList.stream().map(CompletableFuture::join).flatMap(Collection::stream).collect(Collectors.toList());
+        List<String> stringList = partitionList.stream().map(x ->
+                CompletableFuture.supplyAsync(() -> findByIdList(x), executorService))
+                .collect(Collectors.toList()).stream() // 这里一定需要转换为steam流才能是并行的
+                .map(CompletableFuture::join)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toList());
 
         executorService.shutdown();
         System.out.println(stringList);
