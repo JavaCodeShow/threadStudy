@@ -38,8 +38,8 @@ public class CompletableFutureBatchExecuteDemo {
                 .collect(Collectors.toList());
 
         executorService.shutdown();
-        System.out.println(stringList);
-        System.out.println(LocalDateTime.now());
+        System.out.println("stringList=" + stringList);
+        System.out.println("当前时间=" + LocalDateTime.now());
     }
 
     private static List<String> findByIdList(List<String> idList) {
