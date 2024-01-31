@@ -20,7 +20,7 @@ public class CompletableFutureNotResultDemo {
                 .map(x -> CompletableFuture.runAsync(() -> findById(x), executorService))
                 .toArray(CompletableFuture[]::new));
         allFutures.join();
-
+        1
         executorService.shutdown();
         System.out.println("hello world");
         System.out.println(LocalDateTime.now());
