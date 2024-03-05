@@ -16,7 +16,8 @@ public class CompletableFutureAsyncDemo {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-        // 单个
+        long start = System.currentTimeMillis();
+
         List<String> list = Lists.newArrayList("1", "2", "3");
         List<String> stringList = list.stream().map(x ->
                 CompletableFuture.supplyAsync(() -> findById(x), executorService))
@@ -25,15 +26,14 @@ public class CompletableFutureAsyncDemo {
                 .distinct()
                 .collect(Collectors.toList());
 
-
         executorService.shutdown();
         System.out.println(stringList);
-        System.out.println(LocalDateTime.now());
+        System.out.println(System.currentTimeMillis() - start + "ms");
+
     }
 
-
     private static String findById(String id) {
-        System.out.println(LocalDateTime.now() + "   " + id);
+        System.out.println(Thread.currentThread().getName() + "  " + LocalDateTime.now() + "   " + id);
         try {
             TimeUnit.SECONDS.sleep(Integer.parseInt(id));
         } catch (InterruptedException e) {
