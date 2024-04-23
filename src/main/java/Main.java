@@ -1,27 +1,26 @@
-/**
- * @author 江峰
- * @create 2019-11-27 16:43
- */
+import java.util.concurrent.*;
+
 
 public class Main {
 
-    // private static final Main main = new Main();
-
-    private static Main main = null;
-
-    private Main() {
-
-    }
-
-    public static Main getMain() {
-
-        if (main == null) {
-            synchronized (Main.class) {
-                if (main == null) {
-                    main = new Main();
-                }
+    public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        CompletableFuture<Integer> task2 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("异步任务2，当前线程是:" + Thread.currentThread().getId());
+            int result = 1 + 2;
+            int i = 1 / 0;
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }
-        return main;
+
+            System.out.println("异步任务2结束");
+            return result;
+        }, executorService);
+        System.out.println(task2.get(3, TimeUnit.SECONDS));
+        System.out.println("end");
+        executorService.shutdown();
+
     }
 }

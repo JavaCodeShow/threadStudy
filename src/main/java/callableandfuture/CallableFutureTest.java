@@ -7,10 +7,8 @@ import java.util.concurrent.*;
  * @create 2019-11-29 11:03
  */
 public class CallableFutureTest {
-    public static void main(String[] args)
-            throws ExecutionException, InterruptedException {
-        System.out.println(
-                Thread.currentThread().getName() + " " + "start main Thread");
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        System.out.println(Thread.currentThread().getName() + " " + "start main Thread");
         ExecutorService es = Executors.newSingleThreadExecutor();
 
         // web环境中这里可以是对数据库的请求。提高系统的并发量。

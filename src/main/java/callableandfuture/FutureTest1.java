@@ -16,9 +16,7 @@ public class FutureTest1 {
             protected void done() {
                 try {
                     System.out.println("future.done():" + get());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
             }
@@ -26,7 +24,7 @@ public class FutureTest1 {
         // 创建线程池（使用了预定义的配置）
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.execute(future);
-        executor.execute(future);
+        // executor.execute(future);
         executor.shutdown();
 
         try {
@@ -41,9 +39,7 @@ public class FutureTest1 {
         try {
             // 阻塞，等待异步任务执行完毕-获取异步任务的返回值
             System.out.println("future.get():" + future.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         System.out.println("main thread end");
