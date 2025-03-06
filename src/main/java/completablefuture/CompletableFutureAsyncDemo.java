@@ -28,7 +28,7 @@ public class CompletableFutureAsyncDemo {
 
         executorService.shutdown();
         System.out.println(stringList);
-        System.out.println(System.currentTimeMillis() - start + "ms");
+        System.out.println("执行总耗时:" + (System.currentTimeMillis() - start) + "ms");
 
     }
 
